@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Proxy Service</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Proxy Service</h1>
+        <form>
+            <label for="number">Number:</label><br>
+            <input type="text" id="number" name="number" placeholder="Enter a number"><br><br>
+            
+            <label for="operation">Select Operation:</label><br>
+            <select id="operation" name="operation">
+                <option value="primes">Primes</option>
+                <option value="factors">Factors</option>
+            </select><br><br>
+            
+            <input type="button" value="Submit" onclick="sendRequest()">
+        </form> 
+        
+        <div id="response"></div>
+
+        <script>
+            function sendRequest() {
+                const number = document.getElementById("number").value;
+                const operation = document.getElementById("operation").value;
+                const url = `/api/${operation}?number=${number}`;
+                
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("response").innerHTML = `
+                            <h3>Response:</h3>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                    })
+                    .catch(error => {
+                        document.getElementById("response").innerHTML = `
+                            <h3>Error:</h3>
+                            <pre>${error}</pre>
+                        `;
+                    });
+            }
+        </script>
+    </body>
+</html>
